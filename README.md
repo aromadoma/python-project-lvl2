@@ -6,9 +6,8 @@
 
 ## Codeclimate maintainability:
 
-<a href="https://codeclimate.com/github/codeclimate/codeclimate/maintainability"><img src="https://api.codeclimate.com/v1/badges/a99a88d28ad37a79dbf6/maintainability" /></a>
+<a href="https://codeclimate.com/github/aromadoma/python-project-lvl2/maintainability"><img src="https://api.codeclimate.com/v1/badges/c2b93c7b7faebbed4cab/maintainability" /></a>
 
 ## Codeclimate test coverage:
 
-<a href="https://codeclimate.com/github/codeclimate/codeclimate/test_coverage"><img src="https://api.codeclimate.com/v1/badges/a99a88d28ad37a79dbf6/test_coverage" /></a>
-
+<a href="https://codeclimate.com/github/aromadoma/python-project-lvl2/test_coverage"><img src="https://api.codeclimate.com/v1/badges/c2b93c7b7faebbed4cab/test_coverage" /></a>
