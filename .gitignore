@@ -7,5 +7,6 @@ dist/
 .coverage
 coverage.xml
 .pytest_cache/
-*.json
 draft*
+file1.json
+file2.json
