@@ -17,5 +17,8 @@ package-reinstall:
 	python3 -m pip uninstall hexlet-code
 	python3 -m pip install --user dist/*.whl
 
+test:
+	poetry run pytest
+
 lint:
 	poetry run flake8
