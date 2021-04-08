@@ -22,3 +22,6 @@ test:
 
 lint:
 	poetry run flake8
+
+coverage:
+	poetry run pytest --cov=gendiff
