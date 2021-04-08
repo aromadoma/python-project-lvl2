@@ -22,8 +22,9 @@ jobs:
       - run: sudo apt-get install -y make
       - run: python3 -m pip install poetry
       - run: make install
+      - run: make coverage
       - uses: paambaati/codeclimate-action@v2.2.4
         env:
          CC_TEST_REPORTER_ID: 708bc940b0a4838a5d891347aee62a32e2f300fb9195be6bd6884ed017a85821
         with:
-          coverageCommand: make coverage
+          coverageCommand: make report
