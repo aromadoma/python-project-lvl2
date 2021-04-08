@@ -12,3 +12,18 @@ jobs:
       - run: make install
       - run: make lint
       - run: make test
+  coverage:
+    needs: [ tests ]
+    name: coverage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+      - run: sudo apt-get install -y make
+      - run: python3 -m pip install poetry
+      - run: make install
+      - uses: paambaati/codeclimate-action@v2.2.4
+        env:
+         CC_TEST_REPORTER_ID: 708bc940b0a4838a5d891347aee62a32e2f300fb9195be6bd6884ed017a85821
+        with:
+          coverageCommand: make coverage
