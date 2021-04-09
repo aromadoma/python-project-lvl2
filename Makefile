@@ -18,13 +18,13 @@ package-reinstall:
 	python3 -m pip install --user dist/*.whl
 
 test:
-	poetry run pytest
+	poetry run pytest gendiff/ tests
 
 lint:
 	poetry run flake8
 
-coverage:
-	poetry run coverage run --source=gendiff -m pytest
+test-coverage:
+	poetry run pytest --cov=gendiff --cov-report xml tests
 
 report:	
 	poetry run coverage report
