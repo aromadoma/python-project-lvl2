@@ -1,36 +1,32 @@
 import argparse
-import os
-import json
+from gendiff.scripts.parser import parse
 
 
-def generate_diff(file_path1, file_path2):
-    with open(os.path.abspath(file_path1)) as file1, \
-            open(os.path.abspath(file_path2)) as file2:
-        file1_data = json.load(file1)
-        file2_data = json.load(file2)
+def generate_diff(file1_path, file2_path):
 
-    result = '{\n'
+    file1_data = parse(file1_path)
+    file2_data = parse(file2_path)
 
     keys = set(file1_data)
     keys.update(file2_data)
     keys = sorted(list(keys))
 
+    diff = '{\n'
     for key in keys:
         if file1_data.get(key):
             if file2_data.get(key):
                 if file1_data[key] == file2_data[key]:
-                    result += f'    {key}: {file1_data[key]}\n'
+                    diff += f'    {key}: {file1_data[key]}\n'
                 else:
-                    result += f'  - {key}: {file1_data[key]}\n'
-                    result += f'  + {key}: {file2_data[key]}\n'
+                    diff += f'  - {key}: {file1_data[key]}\n'
+                    diff += f'  + {key}: {file2_data[key]}\n'
             else:
-                result += f'  - {key}: {file1_data[key]}\n'
+                diff += f'  - {key}: {file1_data[key]}\n'
         else:
-            result += f'  + {key}: {file2_data[key]}\n'
+            diff += f'  + {key}: {file2_data[key]}\n'
+    diff += '}'
 
-    result += '}'
-
-    return result
+    return diff
 
 
 def main():
