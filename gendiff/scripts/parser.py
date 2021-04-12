@@ -9,4 +9,6 @@ def parse(path):
             data = json.load(f)
         elif path.endswith('.yml'):
             data = yaml.safe_load(f)
+        else:
+            raise ValueError('.yml and .json formats are only supported')
     return data
