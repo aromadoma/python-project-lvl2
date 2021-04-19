@@ -8,9 +8,7 @@ def generate_diff(file1_path, file2_path, view="stylish"):
 
     file1_data = parse(file1_path)
     file2_data = parse(file2_path)
-
     diff = get_inner_diff(file1_data, file2_data)
-
     if view == "stylish":
         return format_stylish(diff)
     elif view == "plain":
@@ -45,7 +43,6 @@ def get_removed_keys_diff(data1, data2):
                            "value": data1[key]
                            }
                      })
-
     return diff
 
 
@@ -61,7 +58,6 @@ def get_common_keys_diff(data1, data2):
                                "children": children
                                }
                          })
-
         # Один ключ - словарь, второй - нет:
         elif has_children(data1[key]) != has_children(data2[key]):
             diff.update({key: {"type": "leaf",
@@ -70,14 +66,14 @@ def get_common_keys_diff(data1, data2):
                                "value": data2[key]
                                }
                          })
-
-        # Оба ключа не словари:
+        # Оба ключа не словари, изменения не было:
         elif data1[key] == data2[key]:
             diff.update({key: {"type": "leaf",
                                "status": "not_updated",
                                "value": data1[key]
                                }
                          })
+        # Оба ключа не словари, изменение было:
         else:
             diff.update({key: {"type": "leaf",
                                "status": "updated",
