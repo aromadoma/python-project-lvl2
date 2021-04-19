@@ -13,7 +13,6 @@ def generate_diff(file1_path, file2_path, view="stylish"):
 
     if view == "stylish":
         return format_stylish(diff)
-        # pass
     elif view == "plain":
         pass
 
@@ -25,14 +24,21 @@ def has_children(element):
     return isinstance(element, dict)
 
 
-def get_inner_diff(data1, data2):
-
+def get_added_keys_diff(data1, data2):
     diff = {}
-
     added_keys = data2.keys() - data1.keys()
-    removed_keys = data1.keys() - data2.keys()
-    common_keys = data2.keys() & data1.keys()
+    for key in added_keys:
+        diff.update({key: {"type": "leaf",
+                           "status": "added",
+                           "value": data2[key]
+                           }
+                     })
+    return diff
 
+
+def get_removed_keys_diff(data1, data2):
+    diff = {}
+    removed_keys = data1.keys() - data2.keys()
     for key in removed_keys:
         diff.update({key: {"type": "leaf",
                            "status": "removed",
@@ -40,13 +46,12 @@ def get_inner_diff(data1, data2):
                            }
                      })
 
-    for key in added_keys:
-        diff.update({key: {"type": "leaf",
-                           "status": "added",
-                           "value": data2[key]
-                           }
-                     })
+    return diff
 
+
+def get_common_keys_diff(data1, data2):
+    diff = {}
+    common_keys = data2.keys() & data1.keys()
     for key in common_keys:
 
         # Оба ключа содержат словари:
@@ -80,6 +85,16 @@ def get_inner_diff(data1, data2):
                                "value": data2[key]
                                }
                          })
+
+    return diff
+
+
+def get_inner_diff(data1, data2):
+
+    diff = {}
+    diff.update(get_added_keys_diff(data1, data2))
+    diff.update(get_removed_keys_diff(data1, data2))
+    diff.update(get_common_keys_diff(data1, data2))
 
     return diff
 
