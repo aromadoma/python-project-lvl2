@@ -126,4 +126,5 @@ def get_internal_diff(tree1, tree2):
     diff.extend(get_removed_keys_diff(tree1, tree2))
     diff.extend(get_common_keys_diff(tree1, tree2))
 
+    # print(diff)
     return diff
