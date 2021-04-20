@@ -1,5 +1,5 @@
 from gendiff.scripts.internal_diff import is_node, is_leaf, get_status, \
-    get_value, get_old_value, get_children, has_complex_value, has_children
+    get_value, get_old_value, get_children, has_children
 
 
 def format_plain(tree):
