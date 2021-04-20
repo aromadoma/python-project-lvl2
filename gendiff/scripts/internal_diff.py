@@ -15,7 +15,7 @@ def is_leaf(element):
 
 
 def is_complex(element):
-    return not is_leaf(element) and not is_leaf(element)
+    return not is_leaf(element) and not is_node(element)
 
 
 def get_name(element):
@@ -43,12 +43,12 @@ def get_children(element):
     return element.get("children")
 
 
-# def has_complex_value(element):
-#     """Return True, if value (element) is dictionary"""
-#     try:
-#         return isinstance(element, dict)
-#     except AttributeError:
-#         return None
+def has_complex_value(element):
+    """Return True, if value (element) is dictionary"""
+    try:
+        return isinstance(element, dict)
+    except AttributeError:
+        return None
 
 
 def has_children(element):
@@ -125,4 +125,5 @@ def get_internal_diff(tree1, tree2):
     diff.extend(get_added_keys_diff(tree1, tree2))
     diff.extend(get_removed_keys_diff(tree1, tree2))
     diff.extend(get_common_keys_diff(tree1, tree2))
+
     return diff

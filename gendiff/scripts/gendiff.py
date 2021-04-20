@@ -2,7 +2,6 @@ import argparse
 from gendiff.scripts.parser import parse
 from gendiff.formatters.stylish import format_stylish
 from gendiff.formatters.plain import format_plain
-from gendiff.formatters.formatter import format_test
 from gendiff.scripts.internal_diff import get_internal_diff
 
 
@@ -12,8 +11,7 @@ def generate_diff(file1_path, file2_path, view="stylish"):
     file2_data = parse(file2_path)
     diff = get_internal_diff(file1_data, file2_data)
     if view == "stylish":
-        # return format_stylish(diff)
-        return format_test(diff)
+        return format_stylish(diff)
     elif view == "plain":
         return format_plain(diff)
 
