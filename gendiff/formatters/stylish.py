@@ -39,11 +39,6 @@ def has_complex_value(element):
         return None
 
 
-def has_children(element):
-    """Return True, if element has children (is dictionary)"""
-    return isinstance(element, dict)
-
-
 def get_stylish_value(value, _depth):
     _margin = '  ' * _depth
     stylish_value = ''

@@ -35,6 +35,7 @@ def get_old_value(element):
 
 
 def format_value(value):
+    """Return formatted value for plain view"""
     if has_complex_value(value):
         return '[complex value]'
     elif isinstance(value, str):
@@ -74,7 +75,6 @@ def flatten(tree):
                 walk(item)
             else:
                 result.append(item)
-
     walk(tree)
     return result
 
