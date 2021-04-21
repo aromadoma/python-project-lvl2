@@ -1,136 +1,85 @@
-def is_node(element):
-    """Return True, if element has type: node"""
-    try:
-        return element.get("type") == "node"
-    except AttributeError:
-        return None
+def get_children(tree):
+    return tree.keys()
 
 
-def is_leaf(element):
-    """Return True, if element has type: leaf"""
-    try:
-        return element.get("type") == "leaf"
-    except AttributeError:
-        return None
+def get_children_set(tree1, tree2):
+    children_set = set(get_children(tree1))
+    children_set.update(set(get_children(tree2)))
+    return children_set
 
 
-def is_complex(element):
-    return not is_leaf(element) and not is_node(element)
+def get_value(tree, child):
+    return tree[child]
 
 
-def get_name(element):
-    """Return name of element"""
-    return element.get("name")
+def get_common_children(tree1, tree2):
+    return get_children(tree1) & get_children(tree2)
 
 
-def get_status(element):
-    """Return status of leaf element"""
-    return element.get("status")
+def get_removed_children(tree1, tree2):
+    return get_children(tree1) - get_children(tree2)
 
 
-def get_value(element):
-    """Return value of leaf element"""
-    return element.get("value")
+def get_added_children(tree1, tree2):
+    return get_children(tree2) - get_children(tree1)
 
 
-def get_old_value(element):
-    """Return value of leaf element"""
-    return element.get("old_value")
+def make_node(name, children):
+    return {"name": name, "type": "node", "children": children}
 
 
-def get_children(element):
-    """Return children of node element"""
-    return element.get("children")
+def make_leaf_added(name, value):
+    return {"name": name, "type": "leaf", "status": "added", "value": value}
 
 
-def has_complex_value(element):
-    """Return True, if value (element) is dictionary"""
-    try:
-        return isinstance(element, dict)
-    except AttributeError:
-        return None
+def make_leaf_removed(name, value):
+    return {"name": name, "type": "leaf", "status": "removed", "value": value}
 
 
-def has_children(element):
-    """Return True, if element has children (is dictionary)"""
-    return isinstance(element, dict)
+def make_leaf_common(tree1, tree2, child):
+    value1 = get_value(tree1, child)
+    value2 = get_value(tree2, child)
+    if isinstance(value1, dict) and isinstance(value2, dict):
+        return {"name": child,
+                "type": "node",
+                "children": make_diff(value1, value2)
+                }
+    elif value1 == value2:
+        return {"name": child,
+                "type": "leaf",
+                "status": "not_updated",
+                "value": value1
+                }
+    else:
+        return {"name": child,
+                "type": "leaf",
+                "status": "updated",
+                "old_value": value1,
+                "value": value2
+                }
 
 
-def get_added_keys_diff(tree1, tree2):
-    """Return internal diff for added keys"""
+def make_diff(tree1, tree2):
+    children = get_children_set(tree1, tree2)
+    common_children = get_common_children(tree1, tree2)
+    removed_children = get_removed_children(tree1, tree2)
+    added_children = get_added_children(tree1, tree2)
+
     diff = []
-    added_keys = tree2.keys() - tree1.keys()
-    for key in added_keys:
-        diff.append({"name": key,
-                     "type": "leaf",
-                     "status": "added",
-                     "value": tree2[key]})
-    return diff
 
+    for child in children:
+        if child in removed_children:
+            value = get_value(tree1, child)
+            diff.append(make_leaf_removed(child, value))
+        elif child in added_children:
+            value = get_value(tree2, child)
+            diff.append(make_leaf_removed(child, value))
+        elif child in common_children:
+            diff.append(make_leaf_common(tree1, tree2, child))
 
-def get_removed_keys_diff(tree1, tree2):
-    """Return internal diff for removed keys"""
-    diff = []
-    removed_keys = tree1.keys() - tree2.keys()
-    for key in removed_keys:
-        diff.append({"name": key,
-                     "type": "leaf",
-                     "status": "removed",
-                     "value": tree1[key]
-                     })
-    return diff
-
-
-def get_common_keys_diff(tree1, tree2):
-    """Return internal diff for common keys"""
-    diff = []
-    common_keys = tree2.keys() & tree1.keys()
-    for key in common_keys:
-        # Both keys are dictionaries:
-        if has_children(tree1[key]) and has_children(tree2[key]):
-            children = get_internal_diff(tree1[key], tree2[key])
-            diff.append({"name": key,
-                         "type": "node",
-                         "children": children
-                         })
-        # One of key is dictionary, another isn't:
-        elif has_children(tree1[key]) != has_children(tree2[key]):
-            diff.append({"name": key,
-                         "type": "leaf",
-                         "status": "updated",
-                         "old_value": tree1[key],
-                         "value": tree2[key]
-                         })
-        # Both keys aren't dictionaries, there was NO update:
-        elif tree1[key] == tree2[key]:
-            diff.append({"name": key,
-                         "type": "leaf",
-                         "status": "not_updated",
-                         "value": tree1[key]
-                         })
-        # Both keys aren't dictionaries, there was an update:
-        else:
-            diff.append({"name": key,
-                         "type": "leaf",
-                         "status": "updated",
-                         "old_value": tree1[key],
-                         "value": tree2[key]
-                         })
     return diff
 
 
 def get_internal_diff(tree1, tree2):
     """Return diff in internal view"""
-    diff = []
-    diff.extend(get_added_keys_diff(tree1, tree2))
-    diff.extend(get_removed_keys_diff(tree1, tree2))
-    diff.extend(get_common_keys_diff(tree1, tree2))
-    # diff[0]['children'].append(get_added_keys_diff(tree1, tree2))
-    # diff[0]['children'].append(get_removed_keys_diff(tree1, tree2))
-    # diff[0]['children'].append(get_common_keys_diff(tree1, tree2))
-
-    print('*******************INTERNAL DIFF************************')
-    print(diff)
-    # print(diff)
-    # return {'name': '', 'type': 'node', 'children': [diff]}
-    return diff
+    return make_node('', make_diff(tree1, tree2))

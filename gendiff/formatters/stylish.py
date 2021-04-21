@@ -1,5 +1,47 @@
-from gendiff.scripts.internal_diff import is_node, is_leaf, get_status, \
-    get_value, get_old_value, get_children, get_name, has_complex_value
+def is_leaf(element):
+    """Return True, if element has type: leaf"""
+    try:
+        return element.get("type") == "leaf"
+    except AttributeError:
+        return None
+
+
+def get_name(element):
+    """Return name of element"""
+    return element.get("name")
+
+
+def get_status(element):
+    """Return status of leaf element"""
+    return element.get("status")
+
+
+def get_value(element):
+    """Return value of leaf element"""
+    return element.get("value")
+
+
+def get_old_value(element):
+    """Return value of leaf element"""
+    return element.get("old_value")
+
+
+def get_children(element):
+    """Return children of node element"""
+    return element.get("children")
+
+
+def has_complex_value(element):
+    """Return True, if value (element) is dictionary"""
+    try:
+        return isinstance(element, dict)
+    except AttributeError:
+        return None
+
+
+def has_children(element):
+    """Return True, if element has children (is dictionary)"""
+    return isinstance(element, dict)
 
 
 def get_stylish_value(value, _depth):
@@ -23,17 +65,13 @@ def get_stylish_leaf(leaf, _depth):
     _margin = '  ' * _depth
     if get_status(leaf) == 'removed':
         stylish_leaf += f'{_margin}- {get_name(leaf)}: '
-        stylish_leaf += get_stylish_value(
-            get_value(leaf), _depth + 1
-        )
+        stylish_leaf += get_stylish_value(get_value(leaf), _depth + 1)
     elif get_status(leaf) == 'added':
         stylish_leaf += f'{_margin}+ {get_name(leaf)}: '
         stylish_leaf += get_stylish_value(get_value(leaf), _depth + 1)
     elif get_status(leaf) == 'updated':
         stylish_leaf += f'{_margin}- {get_name(leaf)}: '
-        stylish_leaf += get_stylish_value(
-            get_old_value(leaf), _depth + 1
-        )
+        stylish_leaf += get_stylish_value(get_old_value(leaf), _depth + 1)
         stylish_leaf += f'{_margin}+ {get_name(leaf)}: '
         stylish_leaf += get_stylish_value(
             get_value(leaf), _depth + 1
@@ -49,7 +87,7 @@ def get_stylish_node(node, _depth):
     stylish_node = ''
     _margin = '  ' * _depth
     stylish_node += '{}  {}: {}'.format(
-        _margin, get_name(node), format_stylish(get_children(node), _depth + 1)
+        _margin, get_name(node), format_stylish(node, _depth + 1)
     )
     return stylish_node
 
@@ -57,14 +95,17 @@ def get_stylish_node(node, _depth):
 def format_stylish(tree, _depth=0):
     stylish_view = '{\n'
     _margin = '  ' * _depth
-    for node in sorted(tree, key=lambda k: k['name']):
+
+    children = get_children(tree)
+    for child in sorted(children, key=lambda k: k['name']):
 
         # Обработка конечных узлов:
-        if is_leaf(node):
-            stylish_view += get_stylish_leaf(node, _depth + 1)
+        if is_leaf(child):
+            stylish_view += get_stylish_leaf(child, _depth + 1)
+
         # Обработка узлов с детьми:
         else:
-            stylish_view += get_stylish_node(node, _depth + 1)
+            stylish_view += get_stylish_node(child, _depth + 1)
 
     stylish_view += f'{_margin}'
     stylish_view += '}\n'
