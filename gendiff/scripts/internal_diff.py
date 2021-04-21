@@ -125,6 +125,12 @@ def get_internal_diff(tree1, tree2):
     diff.extend(get_added_keys_diff(tree1, tree2))
     diff.extend(get_removed_keys_diff(tree1, tree2))
     diff.extend(get_common_keys_diff(tree1, tree2))
+    # diff[0]['children'].append(get_added_keys_diff(tree1, tree2))
+    # diff[0]['children'].append(get_removed_keys_diff(tree1, tree2))
+    # diff[0]['children'].append(get_common_keys_diff(tree1, tree2))
 
+    print('*******************INTERNAL DIFF************************')
+    print(diff)
     # print(diff)
+    # return {'name': '', 'type': 'node', 'children': [diff]}
     return diff
