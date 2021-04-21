@@ -24,16 +24,20 @@ def get_added_children(tree1, tree2):
     return get_children(tree2) - get_children(tree1)
 
 
-def make_node(name, children):
-    return {"name": name, "type": "node", "children": children}
+def make_node(name, type=None, status=None, value=None, children=None):
+    return {"name": name,
+            "type": type,
+            "status": status,
+            "value": value,
+            "children": children}
 
 
-def make_leaf_added(name, value):
-    return {"name": name, "type": "leaf", "status": "added", "value": value}
-
-
-def make_leaf_removed(name, value):
-    return {"name": name, "type": "leaf", "status": "removed", "value": value}
+# def make_leaf_added(name, value):
+#     return {"name": name, "type": "leaf", "status": "added", "value": value}
+#
+#
+# def make_leaf_removed(name, value):
+#     return {"name": name, "type": "leaf", "status": "removed", "value": value}
 
 
 def make_leaf_common(tree1, tree2, child):
@@ -70,10 +74,10 @@ def make_diff(tree1, tree2):
     for child in children:
         if child in removed_children:
             value = get_value(tree1, child)
-            diff.append(make_leaf_removed(child, value))
+            diff.append(make_node(child, type='leaf', status='removed', value=value))
         elif child in added_children:
             value = get_value(tree2, child)
-            diff.append(make_leaf_added(child, value))
+            diff.append(make_node(child, type='leaf', status='added', value=value))
         elif child in common_children:
             diff.append(make_leaf_common(tree1, tree2, child))
 
@@ -82,4 +86,4 @@ def make_diff(tree1, tree2):
 
 def get_internal_diff(tree1, tree2):
     """Return diff in internal view"""
-    return make_node('', make_diff(tree1, tree2))
+    return make_node('', children=make_diff(tree1, tree2))
