@@ -73,7 +73,7 @@ def make_diff(tree1, tree2):
             diff.append(make_leaf_removed(child, value))
         elif child in added_children:
             value = get_value(tree2, child)
-            diff.append(make_leaf_removed(child, value))
+            diff.append(make_leaf_added(child, value))
         elif child in common_children:
             diff.append(make_leaf_common(tree1, tree2, child))
 
