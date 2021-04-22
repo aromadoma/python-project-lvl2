@@ -1,42 +1,5 @@
-def is_leaf(element):
-    """Return True, if element has type: leaf"""
-    try:
-        return element.get("type") == "leaf"
-    except AttributeError:
-        return None
-
-
-def get_name(element):
-    """Return name of element"""
-    return element.get("name")
-
-
-def get_status(element):
-    """Return status of leaf element"""
-    return element.get("status")
-
-
-def get_value(element):
-    """Return value of leaf element"""
-    return element.get("value")
-
-
-def get_old_value(element):
-    """Return value of leaf element"""
-    return element.get("old_value")
-
-
-def get_children(element):
-    """Return children of node element"""
-    return element.get("children")
-
-
-def has_complex_value(element):
-    """Return True, if value (element) is dictionary"""
-    try:
-        return isinstance(element, dict)
-    except AttributeError:
-        return None
+from gendiff.formatters.tools import is_leaf, get_name, get_status, \
+    get_value, get_old_value, get_children, has_complex_value
 
 
 def get_stylish_value(value, _depth):
