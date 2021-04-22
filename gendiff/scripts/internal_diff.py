@@ -24,43 +24,25 @@ def get_added_children(tree1, tree2):
     return get_children(tree2) - get_children(tree1)
 
 
-def make_node(name, type=None, status=None, value=None, children=None):
+def make_node(name, type=None, status=None, old_value=None, value=None, children=None):
     return {"name": name,
             "type": type,
             "status": status,
+            "old_value": old_value,
             "value": value,
             "children": children}
 
 
-# def make_leaf_added(name, value):
-#     return {"name": name, "type": "leaf", "status": "added", "value": value}
-#
-#
-# def make_leaf_removed(name, value):
-#     return {"name": name, "type": "leaf", "status": "removed", "value": value}
-
-
-def make_leaf_common(tree1, tree2, child):
+def make_common_node(tree1, tree2, child):
     value1 = get_value(tree1, child)
     value2 = get_value(tree2, child)
     if isinstance(value1, dict) and isinstance(value2, dict):
-        return {"name": child,
-                "type": "node",
-                "children": make_diff(value1, value2)
-                }
+        return make_node(child, type='node', children=make_diff(value1, value2))
     elif value1 == value2:
-        return {"name": child,
-                "type": "leaf",
-                "status": "not_updated",
-                "value": value1
-                }
+        return make_node(child, type='leaf', status='not_updated', value=value1)
     else:
-        return {"name": child,
-                "type": "leaf",
-                "status": "updated",
-                "old_value": value1,
-                "value": value2
-                }
+        return make_node(child, type='leaf', status='updated',
+                         old_value=value1, value=value2)
 
 
 def make_diff(tree1, tree2):
@@ -79,7 +61,7 @@ def make_diff(tree1, tree2):
             value = get_value(tree2, child)
             diff.append(make_node(child, type='leaf', status='added', value=value))
         elif child in common_children:
-            diff.append(make_leaf_common(tree1, tree2, child))
+            diff.append(make_common_node(tree1, tree2, child))
 
     return diff
 
