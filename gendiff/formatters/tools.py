@@ -15,27 +15,27 @@ def is_node(element):
 
 
 def get_name(element):
-    """Return name of element"""
+    """Return name of node"""
     return element.get("name")
 
 
 def get_status(element):
-    """Return status of leaf element"""
+    """Return status of leaf"""
     return element.get("status")
 
 
 def get_value(element):
-    """Return value of leaf element"""
+    """Return value of leaf"""
     return element.get("value")
 
 
 def get_old_value(element):
-    """Return value of leaf element"""
+    """Return old value of leaf"""
     return element.get("old_value")
 
 
 def get_children(element):
-    """Return children of node element"""
+    """Return children of node"""
     return element.get("children")
 
 
@@ -48,10 +48,12 @@ def has_complex_value(element):
 
 
 def get_path(element):
+    """Return path of node"""
     return element.get('path').lstrip('.')
 
 
 def flatten(tree):
+    """Return flatten list"""
     result = []
 
     def walk(subtree):
