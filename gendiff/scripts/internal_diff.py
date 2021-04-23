@@ -30,7 +30,7 @@ def added_children(tree1, tree2):
     return get_children(tree2) - get_children(tree1)
 
 
-def make_node(name, type=None, status=None, old_value=None, value=None, children=None):
+def make_node(name, type=None, status=None, old_value=None, value=None, children=[]):
     """Return dictionary with node data"""
     return {"name": name, "type": type,
             "status": status,
