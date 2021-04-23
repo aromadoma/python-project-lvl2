@@ -1,9 +1,9 @@
-from gendiff.formatters.tools import is_leaf, get_name, get_status, \
+from gendiff.formatter.tools import is_leaf, get_name, get_status, \
     get_value, get_old_value, get_children, has_complex_value, get_path, flatten
 
 
 def format_value(value):
-    """Return formatted value for plain view"""
+    """Return formatted value of leaf for plain view"""
     if has_complex_value(value):
         return '[complex value]'
     elif isinstance(value, str):
@@ -31,6 +31,7 @@ def get_diff(tree):
 
 
 def format_plain(tree):
+    """Return diff in plain view"""
     plain_view = ''
     diff = sorted(get_diff(tree), key=lambda k: k['path'])
     for node in diff:
