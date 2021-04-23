@@ -1,6 +1,6 @@
 import argparse
-from gendiff.parser import parse
-from gendiff.internal_diff import get_internal_diff
+from gendiff.scripts.parser import parse
+from gendiff.scripts.internal_diff import get_internal_diff
 from gendiff.formatter.stylish import format_stylish
 from gendiff.formatter.plain import format_plain
 from gendiff.formatter.json import format_json
