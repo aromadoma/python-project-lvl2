@@ -1,7 +1,7 @@
 import json
 
-from gendiff.formatter.tools import is_leaf, get_name, get_status, \
-    get_value, get_old_value, get_children, has_complex_value
+from gendiff.formatter.tools import is_leaf, get_name, get_status, get_value, \
+    get_old_value, get_children
 
 
 def make_json_node(node):
@@ -28,4 +28,3 @@ def get_diff(tree):
 
 def format_json(tree):
     return json.dumps(get_diff(tree), sort_keys=True, indent=2)
-
