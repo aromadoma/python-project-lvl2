@@ -18,15 +18,15 @@ def make_stylish_leaf(leaf, _depth):
     _margin = '  ' * _depth
     if get_status(leaf) == 'removed':
         return f'{_margin}- {get_name(leaf)}: ' \
-               f'{make_stylish_value(get_value(leaf), _depth + 1)}'
+               f'{make_stylish_value(get_value(leaf), _depth + 2)}'
     elif get_status(leaf) == 'added':
         return f'{_margin}+ {get_name(leaf)}: ' \
-               f'{make_stylish_value(get_value(leaf), _depth + 1)}'
+               f'{make_stylish_value(get_value(leaf), _depth + 2)}'
     elif get_status(leaf) == 'updated':
         return f'{_margin}- {get_name(leaf)}: ' \
-               f'{make_stylish_value(get_old_value(leaf), _depth + 1)}' \
+               f'{make_stylish_value(get_old_value(leaf), _depth + 2)}' \
                f'{_margin}+ {get_name(leaf)}: ' \
-               f'{make_stylish_value(get_value(leaf), _depth + 1)}'
+               f'{make_stylish_value(get_value(leaf), _depth + 2)}'
     else:
         return f'{_margin}  {get_name(leaf)}: {get_value(leaf)}\n'
 
