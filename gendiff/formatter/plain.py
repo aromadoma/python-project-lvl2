@@ -8,6 +8,10 @@ def format_value(value):
         return '[complex value]'
     elif isinstance(value, str):
         return "'" + value + "'"
+    elif isinstance(value, bool):
+        return str(value).lower()
+    elif value is None:
+        return 'null'
     else:
         return value
 
@@ -41,12 +45,12 @@ def format_plain(tree):
         value = format_value(get_value(node))
         old_value = format_value(get_old_value(node))
 
-        plain_view += f'Property {path} was {status}'
+        plain_view += f'Property \'{path}\' was {status}'
         if status == 'added':
-            plain_view += f' with value {value}.\n'
+            plain_view += f' with value: {value}\n'
         elif status == 'updated':
-            plain_view += f'. From value {old_value} to {value}.\n'
+            plain_view += f'. From {old_value} to {value}\n'
         else:
-            plain_view += '.\n'
+            plain_view += '\n'
 
-    return plain_view
+    return plain_view.rstrip('\n')
