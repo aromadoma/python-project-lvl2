@@ -13,7 +13,7 @@ def test_plain_diff():
     test_file1 = os.path.abspath('tests/fixtures/file1.yml')
     test_file2 = os.path.abspath('tests/fixtures/file2.yml')
     with open(os.path.abspath('tests/fixtures/result_plain')) as result:
-        assert generate_diff(test_file1, test_file2) == result.read()
+        assert generate_diff(test_file1, test_file2, view='plain') == result.read()
 
 
 def test_json_diff():
