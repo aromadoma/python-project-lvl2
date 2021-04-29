@@ -3,7 +3,6 @@ from gendiff.formatter.tools import is_leaf, get_name, get_status, \
 
 
 def format_value(value):
-    print(f'Start format_value. VALUE is {value}')
     if isinstance(value, bool):
         return str(value).lower()
     if value is None:
@@ -44,13 +43,13 @@ def make_stylish_leaf(leaf, _depth):
 def make_stylish_node(node, _depth):
     """Return node in stylish view"""
     _margin = '  ' * _depth
-    return f'{_margin}  {get_name(node)}: {format_stylish(node, _depth + 1)}'
+    return f'{_margin}  {get_name(node)}: {format_stylish(node, _depth + 1)}\n'
 
 
 def format_stylish(tree, _depth=0):
     """Return diff in stylish view"""
-    stylish_view = '{\n'
     _margin = '  ' * _depth
+    stylish_view = '{\n'
 
     children = get_children(tree)
     for child in sorted(children, key=lambda k: k['name']):
@@ -61,5 +60,5 @@ def format_stylish(tree, _depth=0):
         else:
             stylish_view += make_stylish_node(child, _depth + 1)
 
-    stylish_view = stylish_view + f'{_margin}' + '}\n'
+    stylish_view = stylish_view + f'{_margin}' + '}'
     return stylish_view
