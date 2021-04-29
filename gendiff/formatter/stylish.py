@@ -5,14 +5,10 @@ from gendiff.formatter.tools import is_leaf, get_name, get_status, \
 def format_value(value):
     print(f'Start format_value. VALUE is {value}')
     if isinstance(value, bool):
-        print(f'Value is bool. Return {str(value).lower()}')
         return str(value).lower()
     if value is None:
-        print(f'Value is None. Return "null"')
         return 'null'
-    else:
-        print('Return the same value')
-        return value
+    return value
 
 
 def make_stylish_value(value, _depth):
