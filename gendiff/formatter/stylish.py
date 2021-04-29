@@ -2,12 +2,25 @@ from gendiff.formatter.tools import is_leaf, get_name, get_status, \
     get_value, get_old_value, get_children, has_complex_value
 
 
+def format_value(value):
+    print(f'Start format_value. VALUE is {value}')
+    if isinstance(value, bool):
+        print(f'Value is bool. Return {str(value).lower()}')
+        return str(value).lower()
+    if value is None:
+        print(f'Value is None. Return "null"')
+        return 'null'
+    else:
+        print('Return the same value')
+        return value
+
+
 def make_stylish_value(value, _depth):
     """Return value of leaf in stylish view"""
     _margin = '  ' * _depth
     _prev_margin = '  ' * (_depth - 1)
     if not has_complex_value(value):
-        return f'{value}\n'
+        return f'{format_value(value)}\n'
     stylish_value = '{\n'
     for key in value.keys():
         stylish_value += f'{_margin}  {key}: {make_stylish_value(value[key], _depth + 2)}'
